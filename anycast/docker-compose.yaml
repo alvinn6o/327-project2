@@ -1,0 +1,53 @@
+# rewrite to support 3 receivers/servers and 1 senders/clients for anycast
+
+services:
+  # TCP server - listens on port 5000 for client connections
+  server1:
+    build:
+      context: .               
+      dockerfile: Dockerfile.server  # Use server Dockerfile
+    environment:
+      - SERVER_NAME=server1
+    networks: 
+      anycast:
+        aliases: # each server need alias for client to differentiate
+          - server
+
+  server2:
+    build:
+      context: .               
+      dockerfile: Dockerfile.server  # Use server Dockerfile
+    environment:
+      - SERVER_NAME=server2
+    networks: 
+      anycast:
+        aliases: # each server need alias for client to differentiate
+          - server
+
+  server3:
+    build:
+      context: .               
+      dockerfile: Dockerfile.server  # Use server Dockerfile
+    environment:
+      - SERVER_NAME=server3
+    networks: 
+      anycast:
+        aliases: # each server need alias for client to differentiate
+          - server
+
+  client1:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    depends_on:
+      - server1
+      - server2
+      - server3
+    environment:
+      - SERVER_HOST=server
+    networks:
+      - anycast
+
+
+networks:
+  anycast:

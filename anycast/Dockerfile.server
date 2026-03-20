@@ -1,0 +1,11 @@
+# Dockerfile for TCP server container (anycast)
+
+FROM python:3.13
+
+WORKDIR /app
+
+# Copy server script into the container
+COPY server.py .
+
+# Run the server when the container starts
+CMD ["python", "server.py"]

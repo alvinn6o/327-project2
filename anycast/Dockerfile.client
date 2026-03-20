@@ -1,0 +1,11 @@
+# Dockerfile for TCP client container (anycast)
+
+FROM python:3.13
+
+WORKDIR /app
+
+# client script
+COPY client.py .
+
+# run the client
+CMD ["python", "client.py"]

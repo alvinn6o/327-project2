@@ -1,21 +1,12 @@
-# Project 1 Docker
+# Project 2 Docker
 # Authors: Alvin Ngo, Jason Tran
 
-# How to run Task 1
-docker pull nginx:latest
-docker run -d -p 8080:80 --name my-nginx nginx:latest
+# How to test for Task 1 (anycast)
 
-Check the custom web server with the command
-docker run -d -p 8080:80 -v $(pwd)/index.html:/usr/share/nginx/html/index.html nginx:latest
+TCP Dump to capture traffic (in separate terminal)
+docker exec -it anycast-server1-1 apt-get update && docker exec -it anycast-server1-1 apt-get install -y tcpdump
+docker exec -it anycast-server1-1 tcpdump -i eth0 port 5000
 
-# How to run Task 2 Server with Clients
-docker-compose up --build
+From the /anycast folder run the client multiple times in another terminal to show connections with anycast with:
+docker compose run client1 
 
-# Project Files
-- app.py - Hello Docker script
-- server.py - TCP server
-- client.py - TCP client
-- Dockerfile - For app.py
-- Dockerfile.server - For server
-- docker-compose.yaml - Multi-container setup
-- index.html - Custom Nginx page

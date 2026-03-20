@@ -1,0 +1,44 @@
+# Multicast group 224.1.1.1, port 5007
+
+services:
+  # Receiver 1 – joins multicast group, listens for 30 seconds
+  receiver1:
+    build: .
+    container_name: receiver1
+    command: ["python", "multicast_receiver.py", "--duration", "30"]
+    networks:
+      - multicast_net
+
+  # Receiver 2 – same as receiver1, both receive from all senders
+  receiver2:
+    build: .
+    container_name: receiver2
+    command: ["python", "multicast_receiver.py", "--duration", "30"]
+    networks:
+      - multicast_net
+
+  # Sender 1 – money (waits 2s for receivers to join)
+  sender1:
+    build: .
+    container_name: sender1
+    command: sh -c "sleep 2 && python multicast_sender.py --name sender1 --type money --value 125.50"
+    depends_on:
+      - receiver1
+      - receiver2
+    networks:
+      - multicast_net
+
+  # Sender 2 – cash (waits 4s, staggered from sender1)
+  sender2:
+    build: .
+    container_name: sender2
+    command: sh -c "sleep 4 && python multicast_sender.py --name sender2 --type cash --value 48.99"
+    depends_on:
+      - receiver1
+      - receiver2
+    networks:
+      - multicast_net
+
+networks:
+  multicast_net:
+    driver: bridge

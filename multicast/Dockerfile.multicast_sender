@@ -1,0 +1,4 @@
+FROM python:3.13
+WORKDIR /app
+COPY multicast_sender.py ./
+CMD ["python3", "multicast_sender.py"]

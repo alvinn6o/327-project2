@@ -13,11 +13,11 @@ docker compose run client1
 # How to test for Task 2 (multicast)
 
 From the /multicast folder, build and start all containers:
-docker compose up --build
+docker compose up
 
-TCP Dump to capture traffic (in separate terminal while containers are running)
-docker exec -it receiver1 tcpdump -i eth0 udp port 5007
+tcpdump in a separate terminal:
+docker exec -it multicast-multicast_receiver1-1 tcpdump -i eth0 udp port 5007
+RUN RIGHT AFTER docker compose up runs on first terminal
 
-Receivers will automatically join the multicast group 224.1.1.1 and listen for 30 seconds.
-sender1 sends money data, sender2 sends cash data (JSON with type/value), both receivers print all messages.
-Containers exit automatically after 30 seconds.
+Receivers join multicast group 224.1.1.1:5007 for 15 seconds.
+sender1 sends temp data, sender2 sends humidity data (JSON + binary). Both receivers print all messages.

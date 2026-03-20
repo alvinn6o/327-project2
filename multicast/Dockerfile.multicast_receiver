@@ -1,0 +1,6 @@
+FROM python:3.13
+WORKDIR /app
+RUN apt-get update && apt-get install -y tcpdump && rm -rf /var/lib/apt/lists/*
+COPY multicast_receiver.py ./
+ENTRYPOINT ["python3", "multicast_receiver.py"]
+CMD ["--duration", "15"]
